@@ -2,6 +2,7 @@
 // import { toast } from "react-toastify";
 // import { loginUserApi } from "../apis/Api";
 // import { Link, useNavigate } from "react-router-dom";
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 // const Login = () => {
 //   const [userName, setUserName] = useState("");
@@ -278,6 +279,7 @@ const Login = () => {
                 value={password}
                 onChange={changePassword}
               />
+              
               {passwordError && <p className='text-red-500 text-sm'>{passwordError}</p>}
             </div>
             <div className="flex justify-between items-center">
@@ -328,3 +330,5 @@ const Login = () => {
 }
  
 export default Login;
+
+

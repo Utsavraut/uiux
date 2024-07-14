@@ -26,14 +26,9 @@ import {
   
     const sidebarItems = [
       { path: "/admin-dashboard", label: "Dashboard", icon: faTachometerAlt },
-      { path: "/admin-aboutUs", label: "About Us", icon: faInfoCircle },
-      { path: "/admin-testimonial", label: "Testimonial", icon: faMessage },
-      { path: "/admin-enqueries", label: "Applies", icon: faList },
-      // { path: "/admin-gallery", label: "Gallery", icon: faPhotoFilm },
-      { path: "/admin-testPreparation", label: "Test Preparation", icon: faBook },
-      { path: "/admin-country", label: "Universities", icon: faGlobe },
-      { path: "/admin-events", label: "Events", icon: faCalendarAlt },
-      { path: "/admin-message", label: "Messages", icon: faComments },
+      { path: "/admin-country", label: "Destinations", icon: faGlobe },
+      { path: "/admin-message", label: "Bookings", icon: faComments },
+      { path: "/admin-enqueries", label: "Contact", icon: faList },
       { path: "/admin-blogs", label: "Blogs", icon: faBlog },
       { path: "/logout", label: "Log Out", icon: faSignOutAlt },
     ];
@@ -43,7 +38,7 @@ import {
         <div className="flex flex-row">
           <div className="w-64 min-h-screen bg-[#54A15D] text-black">
             <div className="flex items-center justify-center h-20 shadow-md">
-              <h1 className="text-3xl uppercase font-bold">Dashboard</h1>
+              <h1 className="text-3xl uppercase font-bold">Nepal traveller</h1>
             </div>
             <ul className="py-4">
               {sidebarItems.map((item, index) => (

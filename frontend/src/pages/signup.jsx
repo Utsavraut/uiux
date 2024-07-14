@@ -158,7 +158,7 @@ const Signup = () => {
               name="userName"
               value={userName}
               onChange={handleChange}
-              placeholder="userName"
+              placeholder="Username"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#54A15D]"
               required
             />
@@ -196,6 +196,11 @@ const Signup = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#54A15D]"
               required
             />
+             <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                onClick={handleShowPasswordToggle}
+                className="absolute top-3 right-3 cursor-pointer text-gray-500"
+              />
             <button
               type="submit"
               className="w-full py-2 px-4 bg-[#54A15D] hover:bg-[#54A15D] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#54A15D]"
@@ -208,7 +213,30 @@ const Signup = () => {
             <span className="px-4 text-gray-500">OR</span>
             <hr className="w-full border-gray-300" />
           </div>
-          {/* Add social media login buttons here if needed */}
+          <div className="space-y-4">
+            <button
+              type="button"
+              className="w-full py-2 px-4 border border-gray-300 rounded-md flex items-center justify-center hover:bg-gray-50"
+            >
+              <img
+                src="assets/images/google.png"
+                alt="Google"
+                className="w-5 h-5 mr-2"
+              />
+              Sign in with Google
+            </button>
+            <button
+              type="button"
+              className="w-full py-2 px-4 border border-gray-300 rounded-md flex items-center justify-center hover:bg-gray-50"
+            >
+              <img
+                src="assets/images/fb.png"
+                alt="Facebook"
+                className="w-5 h-5 mr-2"
+              />
+              Sign in with Facebook
+            </button>
+          </div>
           <p className="text-sm text-center text-gray-500 mt-4">
             Already have an account? <a href="/login" className="text-[#54A15D] hover:underline">Sign in</a>
           </p>

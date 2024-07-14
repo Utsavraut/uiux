@@ -23,6 +23,8 @@ import ProfilePage from "./pages/profile";
 import LandingPage from "./pages/landingpage";
 import UserRoutes from "./protected/UserRotes";
 import AdminRoutes from "./protected/AdminRoutes";
+import EditDestination from './pages/admin/EditDestination';
+import About from './pages/Aboutus';
 
 function App() {
   return (
@@ -59,13 +61,22 @@ function AppContent() {
         <Route path='/booking' element={<BookingForm />} />
         <Route path='/for' element={<ForgotPassword />} />
         <Route path='/prof' element={<ProfilePage />} />
+        <Route path='/about' element={<About />} />
+
         <Route path='/' element={<LandingPage />} />
+        
+
+
+
+
         <Route element={<AdminRoutes />}>
           <Route path='/adminsid' element={<AdminSidebar />} />
           <Route path='/dash' element={<Dashboard />} />
           <Route path='/add' element={<AdminCountry />} />
           <Route path='/addblog' element={<AdminBlog />} />
           <Route path='/book' element={<AdminBooking />} />
+          <Route path='/editdes' element={<EditDestination />} />
+
         </Route>
       </Routes>
 
