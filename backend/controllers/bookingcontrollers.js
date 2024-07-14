@@ -88,8 +88,8 @@ const getAllBooking = async (req, res) => {
   console.log(dateTime);
   try {
     const listOfBookings = await Bookings.find({})
-      .populate("user", "userName")
-      .populate("destination", "destinationName datefrom dateto price");
+      .populate("userId")
+      .populate("destinationId", "destinationName datefrom dateto price");
     res.json({
       success: true,
       bookings: listOfBookings,

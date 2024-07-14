@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getBookingApi } from "../../apis/Api";
 import AdminSidebar from "./AdminSidebar";
+import { toast } from "react-toastify";
 
 const AdminMessage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,16 +18,23 @@ const AdminMessage = () => {
   };
 
   // Mock data for demonstration purposes
-  const [allMessages, setAllMessages] = useState([
-    { id: 1, fullName: 'John Doe', email: 'john@example.com', phoneNum: '1234567890', country: 'USA', address: '1234 Street', message: 'This is a sample message.' },
-    { id: 2, fullName: 'Jane Doe', email: 'jane@example.com', phoneNum: '0987654321', country: 'Canada', address: '5678 Avenue', message: 'This is another sample message.' },
-  ]);
+  const [allMessages, setAllMessages] = useState([]);
 
   // Simulate deletion action
   const deleteMessage = (id) => {
     setAllMessages(allMessages.filter(message => message.id !== id));
     closeModal();
   };
+
+  useEffect(() => {
+    getBookingApi().then((res) => {
+      if (res.data.success) {
+        setAllMessages(res?.data?.bookings)
+      } else {
+        toast.error(res?.data?.message)
+      }
+    })
+  }, [])
 
   return (
     <AdminSidebar>
@@ -41,32 +50,24 @@ const AdminMessage = () => {
           <table className="w-full whitespace-nowrap">
             <thead>
               <tr className="h-16 w-full text-sm leading-none text-gray-800">
-                <th className="font-medium text-left pl-4">Full Name</th>
-                <th className="font-medium text-left pl-12">Email</th>
-                <th className="font-medium text-left pl-12">Phone Number</th>
-                <th className="font-medium text-left pl-12">Country</th>
-                <th className="font-medium text-left pl-12">Address</th>
-                <th className="font-medium text-left pl-12">Message</th>
-                <th className="font-medium text-center pl-12">Action</th>
+                <th className="font-medium text-left pl-4">User Name</th>
+                <th className="font-medium text-left pl-12">Desination</th>
+                <th className="font-medium text-left pl-12">Price</th>
+                <th className="font-medium text-left pl-12">DateFrom</th>
+                <th className="font-medium text-left pl-12">DateTo</th>
+                <th className="font-medium text-left pl-12">Phone</th>
               </tr>
             </thead>
             <tbody>
               {allMessages.map((eachData) => (
                 <tr key={eachData.id} className="h-20 text-sm leading-none text-gray-800 bg-white hover:bg-gray-100 border-b border-t border-gray-100">
-                  <td className="pl-12">{eachData.fullName}</td>
-                  <td className="pl-12">{eachData.email}</td>
-                  <td className="pl-20">{eachData.phoneNum}</td>
-                  <td className="pl-20">{eachData.country}</td>
-                  <td className="pl-20">{eachData.address}</td>
-                  <td className="pl-20">{eachData.message}</td>
-                  <td className="px-7 2xl:px-0 text-center">
-                    <button
-                      onClick={() => openModal(eachData.id)}
-                      className="bg-[#e92939] py-2 px-3 text-white rounded m-1 text-sm"
-                    >
-                      Delete
-                    </button>
-                  </td>
+                  <td className="pl-12">{eachData.userId.userName}</td>
+                  <td className="pl-12">{eachData.destinationId.destinationName}</td>
+                  <td className="pl-20">{eachData.destinationId.price}</td>
+                  <td className="pl-20">{new Date(eachData.datefrom).toLocaleDateString()}</td>
+                  <td className="pl-20">{new Date(eachData.dateto).toLocaleDateString()}</td>
+                  <td className="pl-20">{eachData.contact}</td>
+                  
                 </tr>
               ))}
             </tbody>

@@ -12,6 +12,7 @@ router.post('/login', userController.loginUser)
 router.get("/get_user/:id", userController.getSingleUser)
 
 router.post("/create_booking", bookingController.createBooking),
+router.get("/get_booking", bookingController.getAllBooking),
 
 
 // update the user

@@ -26,8 +26,8 @@ import {
   
     const sidebarItems = [
       { path: "/admin-dashboard", label: "Dashboard", icon: faTachometerAlt },
-      { path: "/admin-country", label: "Destinations", icon: faGlobe },
-      { path: "/admin-message", label: "Bookings", icon: faComments },
+      { path: "/add", label: "Destinations", icon: faGlobe },
+      { path: "/book", label: "Bookings", icon: faComments },
       { path: "/admin-enqueries", label: "Contact", icon: faList },
       { path: "/admin-blogs", label: "Blogs", icon: faBlog },
       { path: "/logout", label: "Log Out", icon: faSignOutAlt },
