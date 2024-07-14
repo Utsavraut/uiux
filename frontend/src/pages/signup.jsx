@@ -1,94 +1,3 @@
-// import React from 'react';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-
-// const Signup = () => {
- 
-//   return (
-//     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-//       <div className="bg-white shadow-md rounded-lg overflow-hidden flex max-w-4xl">
-//         <div className="w-1/2 hidden md:block">
-//           <img
-//             src="assets/images/signup.png"
-//             alt="Nature"
-//             className="w-full h-full object-cover"
-//           />
-//         </div>
-//         <div className="w-full md:w-1/2 p-8">
-//           <h2 className="text-2xl font-bold text-gray-800 mb-4">Welcome 👋</h2>
-//           <form className="space-y-6">
-//             <div>
-//               <label className="block text-gray-700">Email</label>
-//               <input
-//                 type="email"
-//                 placeholder="Example@gmail.com"
-//                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#54A15D]"
-//               />
-//             </div>
-//             <div>
-//               <label className="block text-gray-700">Password</label>
-//               <input
-//                 type="password"
-//                 placeholder="At Least 8 characters"
-//                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#54A15D]"
-//               />
-//             </div>
-//             <div>
-//               <label className="block text-gray-700">Confirm Password</label>
-//               <input
-//                 type="password"
-//                 placeholder="At Least 8 characters"
-//                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#54A15D]"
-//               />
-//             </div>
-//             <button
-//               type="submit"
-//               className="w-full py-2 px-4 bg-[#54A15D] hover:bg-[#54A15D] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#54A15D]"
-//             >
-//               Sign Up
-//             </button>
-//           </form>
-//           <div className="my-6 flex items-center justify-center">
-//             <hr className="w-full border-gray-300" />
-//             <span className="absolute bg-white px-4 text-gray-500">OR</span>
-//           </div>
-//           <div className="space-y-4">
-//             <button
-//               type="button"
-//               className="w-full py-2 px-4 border border-gray-300 rounded-md flex items-center justify-center hover:bg-gray-50"
-//             >
-//               <img
-//                 src="assets/images/google.png"
-//                 alt="Google"
-//                 className="w-5 h-5 mr-2"
-//               />
-//               Sign in with Google
-//             </button>
-//             <button
-//               type="button"
-//               className="w-full py-2 px-4 border border-gray-300 rounded-md flex items-center justify-center hover:bg-gray-50"
-//             >
-//               <img
-//                 src="assets/images/fb.png"
-//                 alt="Facebook"
-//                 className="w-5 h-5 mr-2"
-//               />
-//               Sign in with Facebook
-//             </button>
-//           </div>
-//           <p className="text-sm text-center text-gray-500 mt-4">
-//             Already have an Account? <a href="#" className="text-[#54A15D] hover:underline">Sign in</a>
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Signup;
-
-
-
 
 
 import React, { useState } from 'react';
@@ -151,7 +60,7 @@ const Signup = () => {
           <img src="assets/images/signup.png" alt="Signup" className="w-full h-full object-cover" />
         </div>
         <div className="w-full md:w-1/2 p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Welcome 👋</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Welcome To Nepal Traveller👋</h2>
           <form className="space-y-6" onSubmit={handleSubmit}>
             <input
               type="text"
@@ -187,6 +96,7 @@ const Signup = () => {
                 className="absolute top-3 right-3 cursor-pointer text-gray-500"
               />
             </div>
+            <div className="relative">
             <input
               type={showPassword ? 'text' : 'password'}
               name="confirmPassword"
@@ -196,11 +106,13 @@ const Signup = () => {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#54A15D]"
               required
             />
-             <FontAwesomeIcon
+            <FontAwesomeIcon
                 icon={showPassword ? faEyeSlash : faEye}
                 onClick={handleShowPasswordToggle}
                 className="absolute top-3 right-3 cursor-pointer text-gray-500"
               />
+            </div>
+            
             <button
               type="submit"
               className="w-full py-2 px-4 bg-[#54A15D] hover:bg-[#54A15D] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#54A15D]"

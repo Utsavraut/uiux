@@ -21,7 +21,7 @@ import {
     const handleLogout = (e) => {
       e.preventDefault();
       localStorage.clear();
-      window.location.href = "/login";
+      window.location.href = "/";
     };
   
     const sidebarItems = [
