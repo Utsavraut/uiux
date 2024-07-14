@@ -75,7 +75,7 @@ function AppContent() {
           <Route path='/add' element={<AdminCountry />} />
           <Route path='/addblog' element={<AdminBlog />} />
           <Route path='/book' element={<AdminBooking />} />
-          <Route path='/editdes' element={<EditDestination />} />
+          <Route path='/editdes/:id' element={<EditDestination />} />
 
         </Route>
       </Routes>

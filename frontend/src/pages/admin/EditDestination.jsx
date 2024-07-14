@@ -1,168 +1,87 @@
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import { getSingleDestinationApi, updateDestinationApi } from "../../apis/Api";
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { getDestinationByIdApi, updateDestinationApi } from '../../apis/Api';
 
 const EditDestination = () => {
-  // Receive id from URL
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [destinationName, setDestinationName] = useState("");
-  const [district, setDistrict] = useState("");
-  const [price, setPrice] = useState("");
-  const [destinationImageUrl, setDestinationImageUrl] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null); // State to hold the image preview URL
-  const [oldImagePreview, setOldImagePreview] = useState(null); // State to hold the image preview URL
+  const [destination, setDestination] = useState({
+    destinationName: '',
+    district: '',
+    price: '',
+    map: '',
+    description:'',
+    destinationImageUrl: '',
+  });
+  const [image, setImage] = useState('');
+  const [imageFile, setImageFile] = useState(null);
 
-//   useEffect(() => {
-//     getSingleDestinationApi(id).then((res) => {
-//       setDestinationName(res.data.destination.destinationName);
-//       setDistrict(res.data.destination.district);
-//       setPrice(res.data.destination.price);
-//       setOldImagePreview(res.data.destination.imageUrl);
-//     });
-//   }, [id]);
+  useEffect(() => {
+    getDestinationByIdApi(id).then((res) => {
+      if (res.data.success) {
+        setDestination(res.data.destination);
+        setImage(res.data.destination.destinationImageUrl);
+      } else {
+        toast.error("Could not fetch destination details.");
+        navigate('/admin-country');
+      }
+    });
+  }, [id, navigate]);
 
-//   const editDestination = (e) => {
-//     e.preventDefault();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setDestination({ ...destination, [name]: value });
+  };
 
-//     const formData = new FormData();
-//     formData.append("destinationName", destinationName);
-//     formData.append("district", district);
-//     formData.append("price", price);
-//     formData.append("destinationImage", destinationImageUrl);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+    setImage(URL.createObjectURL(file));
+  };
 
-//     updateDestinationApi(id, formData)
-//       .then((res) => {
-//         if (res.data.success === false) {
-//           toast.error(res.data.message);
-//         } else {
-//           toast.success(res.data.message);
-//           navigate("/admin-country");
-//         }
-//       })
-//       .catch((e) => {
-//         toast.error(e.message);
-//         console.log(e);
-//       });
-//   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('destinationName', destination.destinationName);
+    formData.append('district', destination.district);
+    formData.append('price', destination.price);
+    formData.append('description', destination.description);
+    formData.append('map', destination.map);
+    if (imageFile) {
+      formData.append('destinationImageUrl', imageFile);
+    }
 
-//   const handleImageChange = (e) => {
-//     const selectedImage = e.target.files[0];
-//     setDestinationImageUrl(selectedImage);
-//     if (selectedImage) {
-//       setImagePreview(URL.createObjectURL(selectedImage));
-//     }
-//   };
+    updateDestinationApi(id, formData)
+      .then((response) => {
+        if (response.data.success) {
+          toast.success("Destination updated successfully.");
+          navigate('/add');
+        } else {
+          toast.error(response.data.message);
+        }
+      })
+      .catch(error => toast.error("Error updating destination: " + error.message));
+  };
 
   return (
-    <div
-      className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
-      id="my-modal"
-    >
-      <div className="relative top-20 mx-auto p-5 border w-1/2 shadow-lg rounded-md bg-white">
-        <div className="absolute top-0 right-0 pt-4 pr-4">
-          <Link
-            to={"/admin-country"}
-            className="text-black bg-gray-200 hover:bg-gray-300 rounded-lg text-sm p-1.5"
-          >
-            <FontAwesomeIcon icon={faTimes} />
-          </Link>
-        </div>
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
+      <div className="relative top-20 mx-auto p-5 border w-1/3 shadow-lg rounded-md bg-white">
+        <form className="space-y-6 p-4" onSubmit={handleSubmit}>
+          <h3 className="text-center text-2xl font-semibold">Edit Destination</h3>
+          <input type="text" name="destinationName" value={destination.destinationName} onChange={handleChange} placeholder="Destination Name" className="w-full p-2 border rounded" required />
+          <input type="text" name="district" value={destination.district} onChange={handleChange} placeholder="District" className="w-full p-2 border rounded" required />
+          <input type="number" name="price" value={destination.price} onChange={handleChange} placeholder="Price (NRS)" className="w-full p-2 border rounded" required />
+          <input type="text" name="map" value={destination.map} onChange={handleChange} placeholder="Google Maps URL" className="w-full p-2 border rounded" />
+          <input type="text" name="description" value={destination.description} onChange={handleChange} placeholder="Google Maps URL" className="w-full p-2 border rounded" />
 
-        <form className="space-y-6">
-          <h3 className="leading-6 text-gray-900 text-center font-semibold text-2xl">
-            Edit Destination
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label
-                htmlFor="destinationName"
-                className="block text-sm font-medium text-gray-900"
-              >
-                Destination Name
-              </label>
-              <input
-                value={destinationName}
-                onChange={(e) => setDestinationName(e.target.value)}
-                type="text"
-                className="mt-1 block w-full border border-solid border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                required
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="district"
-                className="block text-sm font-medium text-gray-900"
-              >
-                District
-              </label>
-              <input
-                value={district}
-                onChange={(e) => setDistrict(e.target.value)}
-                type="text"
-                className="mt-1 block w-full border border-solid border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                required
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="price"
-                className="block text-sm font-medium text-gray-900"
-              >
-                Price (NRS)
-              </label>
-              <input
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                type="number"
-                className="mt-1 block w-full border border-solid border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                required
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="destinationImage"
-                className="block text-sm font-medium text-gray-900"
-              >
-                Destination Image
-              </label>
-              <input
-                type="file"
-             
-                accept="image/*"
-                className="mt-1 block w-full border border-solid border-gray-300 text-gray-900 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                required
-              />
-            </div>
-            <div className="flex">
-              {oldImagePreview && (
-                <img
-                  src={oldImagePreview}
-                  alt="Destination Preview"
-                  className="mt-2 w-32 h-32 p-4 object-cover"
-                />
-              )}
-              {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="Destination Preview"
-                  className="mt-2 w-32 h-32 p-4 object-cover"
-                />
-              )}
-            </div>
+          <div>
+            <label htmlFor="destinationImage" className="block text-sm font-medium text-gray-900">Destination Image</label>
+            <input type="file" onChange={handleImageChange} accept="image/*" className="w-full p-2 border rounded" />
+            {image && <img src={image} alt="Preview" className="mt-2 w-32 h-32 rounded" />}
           </div>
-          <button
-            type="submit"
-          
-            className="w-full bg-[#54A15D] hover:bg-[#54A15D] focus:ring-4 focus:outline-none focus:ring-[#54A15D] rounded-lg text-sm px-5 py-2.5 text-center text-black font-semibold"
-          >
-            Edit Destination
-          </button>
+          <button type="submit" className="w-full bg-[#54A15D] hover:bg-green-700 text-white py-2 px-4 rounded">Update Destination</button>
         </form>
       </div>
     </div>

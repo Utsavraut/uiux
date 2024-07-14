@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createDestinationApi, getDestinationApi, getDestinationByIdApi,deleteDestinationApi } from '../../apis/Api';
 import AdminSidebar from './AdminSidebar';
+import { useNavigate } from 'react-router-dom';
 
 const AdminCountry = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,6 +16,7 @@ const AdminCountry = () => {
   const [price, setPrice] = useState('');
   const [destinationImageUrl, setDestinationImageUrl] = useState(null);
   const [destinations, setDestinations] = useState([]);
+  const navigate = useNavigate(); // Initialize navigate function
 
   useEffect(() => {
     const fetchDestinations = async () => {
@@ -50,20 +52,12 @@ const AdminCountry = () => {
     }
   };
 
-
-
   const handleEditClick = async (destinationId) => {
+  
     try {
       const response = await getDestinationByIdApi(destinationId);
       if (response.data.success) {
-        const { destinationName, district, price, description, map, destinationImageUrl } = response.data.destination;
-        setDestinationName(destinationName);
-        setDistrict(district);
-        setPrice(price);
-        setDescription(description);
-        setMap(map);
-        setDestinationImageUrl(destinationImageUrl); // Note: This will not work directly if image URL is a string, handle file display separately
-        toggleModal();
+        navigate(`/editdes/${destinationId}`); // Navigate to the edit page
       } else {
         toast.error('Failed to fetch destination details for editing');
       }
@@ -71,7 +65,6 @@ const AdminCountry = () => {
       toast.error('Error fetching destination details: ' + error.message);
     }
   };
-  
 
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);

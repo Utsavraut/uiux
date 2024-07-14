@@ -28,9 +28,9 @@ export const getDestinationByIdApi = (id) => Api.get(`api/admin/destination/getB
 
 export const getYouMayLikeDataApi = (id) => Api.get(`api/admin/destination/youMayLike/${id}`)
 export const createBookingApi = (data)=> Api.post('api/users/create_booking',data)
-export const updateDestinationApi = (id,data)=> Api.post(`api/admin/update_destination/${id}`,data,config)
+export const updateDestinationApi = (id, data)=> Api.put(`api/admin/update_destination/${id}`,data,config)
 
-export const deleteDestinationApi = (id)=> Api.delete(`api/admin/delete_destination/${id}`,config)
+export const deleteDestinationApi = (id)=> Api.delete(`api/admin/delete_destination/${id}`)
 // export const updateUserApi = (id, data) => Api.put(`/api/user/update_user/${id}`, data);
 // export const getSingleUserApi = (id) => Api.get(`/api/user/get_user/${id}`)
 // export const forgetPasswordAPI = (data)=> Api.post('/api/user/forgetpassword', data)`
