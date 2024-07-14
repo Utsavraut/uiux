@@ -1,8 +1,32 @@
-import { faChevronDown, faChevronUp, faCircle, faMapMarkerAlt, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faChevronDown, faChevronUp, faCircle, faMapMarkerAlt, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { getDestinationByIdApi, getYouMayLikeDataApi } from '../apis/Api';
 
 const DescriptionPage = () => {
+  const { id } = useParams();
+  const [destination, setDestinations] = useState({});
+  const [youMayLike, setYouMayLike] = useState([])
+
+  useEffect(() => {
+    getDestinationByIdApi(id).then((res) => {
+      if (res.data.success) {
+        setDestinations(res.data.destination)
+      } else {
+        toast.error('Something went wrong while fetching single destination')
+      }
+    })
+
+    getYouMayLikeDataApi(id).then((res) => {
+      if (res.data.success) {
+        setYouMayLike(res.data.likeData)
+      } else {
+        toast.error('Something went wrong while fetching you may like data')
+      }
+    })
+  }, [id])
   const [activeTab, setActiveTab] = useState('overview');
   const [faqs, setFaqs] = useState([
     {
@@ -29,9 +53,9 @@ const DescriptionPage = () => {
   return (
     <div className="container mx-auto px-4 py-4">
       {/* Breadcrumb */}
-      
-      <h1 className="text-4xl font-bold mb-4">Annapurna Base Camp</h1>
-      <img src="assets/images/desc.png" alt="Annapurna Base Camp" className="w-full rounded-lg shadow-lg mb-6" />
+
+      <h1 className="text-4xl font-bold mb-4">{destination.destinationName}</h1>
+      <img src={destination.destinationImageUrl} alt="Annapurna Base Camp" className="w-full rounded-lg shadow-lg mb-6" />
 
       {/* Tabs */}
       <div className="bg-gray-100 p-6 rounded-lg shadow-lg mb-6">
@@ -66,15 +90,7 @@ const DescriptionPage = () => {
         {/* Tab Content */}
         {activeTab === 'overview' && (
           <div className="mt-6 text-gray-700 leading-relaxed">
-            <p className="mb-4">
-              Travel is the movement of people between relatively distant geographical locations, and can involve travel by foot, bicycle, automobile, train, boat, bus, airplane, or other means, with or without luggage, and can be one way or round trip. Travel can also include relatively short stays between successive movements.
-            </p>
-            <p className="mb-4">
-              The origin of the word “travel” is most likely lost to history. The term “travel” may originate from the Old French word travail, which means ‘work’. According to the Merriam Webster dictionary, the first known use of the word travel was in the 14th century.
-            </p>
-            <p className="mb-4">
-              It also states that the word comes from Middle English travelen, travelen (which means to torment, labor, strive, journey) and earlier from Old French travailler (which means to work strenuously, toil). In English we still occasionally use the words “travail”, which means struggle. According to Simon Winchester in his book The Best Travelers’ Tales (2004), the words “travel” and “travail” both share an even more ancient root: a Roman instrument of torture called the tripalium (in Latin it means “three stakes”, as in to impale).
-            </p>
+            <p>{destination.description}</p>
           </div>
         )}
 
@@ -188,8 +204,8 @@ const DescriptionPage = () => {
         )}
 
 
-         {/* FAQs Section */}
-         {activeTab === 'faqs' && (
+        {/* FAQs Section */}
+        {activeTab === 'faqs' && (
           <div className=" mb-6">
             {faqs.map((faq, index) => (
               <div key={index} className="mb-4">
@@ -239,7 +255,7 @@ const DescriptionPage = () => {
 
         <div className='bg-gray-100 p-6 rounded-lg shadow-lg md:w-1/2'>
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14021.282107702496!2d83.86815086350525!3d28.53008399552189!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3995f588b6a4922d%3A0xbaf344120520a16c!2sAnnapurna%20Sanctuary!5e0!3m2!1sen!2snp!4v1719111581125!5m2!1sen!2snp"
+            src={destination.map}
             width="100%" // Set width to 100% to fill the container
             height="100%" // Adjust height as needed
             style={{ border: 0 }}
@@ -250,25 +266,25 @@ const DescriptionPage = () => {
         </div>
       </div>
 
-{/* Book Now Button */}
-<div className="flex justify-center my-8">
-  <button className="bg-[#54A15D] hover:bg-green-700 text-white font-bold py-2 px-8 rounded-full">
-    Book Now
-  </button>
-</div>
+      {/* Book Now Button */}
+      <div className="flex justify-center my-8">
+        <button className="bg-[#54A15D] hover:bg-green-700 text-white font-bold py-2 px-8 rounded-full">
+          Book Now
+        </button>
+      </div>
 
 
       {/* You Might Also Like */}
       <div className="mt-8">
         <h3 className="text-2xl font-bold text-center mb-4">You Might Also Like</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {recommendations.map((rec, index) => (
+          {youMayLike.map((data, index) => (
             <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <img src={rec.image} alt={rec.name} className="w-full h-48 object-cover" />
+              <img src={data.destinationImageUrl} alt={data.destinationName} className="w-full h-48 object-cover" />
               <div className="p-4">
-                <h4 className="text-xl font-bold mb-2">{rec.name}</h4>
-                <p className="text-gray-700 mb-2">{rec.location}</p>
-                <p className="text-[#54A15D] font-semibold">Starting From Rs. {rec.price}</p>
+                <h4 className="text-xl font-bold mb-2">{data.destinationName}</h4>
+                <p className="text-gray-700 mb-2">{data.district}</p>
+                <p className="text-[#54A15D] font-semibold">Starting From Rs. {data.price}</p>
                 <button className="mt-4 bg-[#54A15D] hover:bg-[#54A15D] text-white py-2 px-4 rounded-md">BOOK NOW</button>
               </div>
             </div>
@@ -278,11 +294,5 @@ const DescriptionPage = () => {
     </div>
   );
 };
-
-const recommendations = [
-  { name: 'Fewa Tal', location: 'Pokhara', price: '7000', image: 'assets/images/fewa.png' },
-  { name: 'Rara Lake', location: 'Mugu', price: '7000', image: 'assets/images/rara.png' },
-  { name: 'Mustang', location: 'Manang', price: '7000', image: 'assets/images/mus.png' },
-];
 
 export default DescriptionPage;

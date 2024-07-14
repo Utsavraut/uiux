@@ -1,9 +1,22 @@
-import React from 'react';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faMapMarkerAlt, faClock } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getDestinationApi } from '../apis/Api';
+import { toast } from 'react-toastify';
 
 const HomePage = () => {
+  const [ destinations, setDestinations ] = useState([])
+  useEffect(() => {
+    getDestinationApi().then((res) => {
+      if (res.data.success) {
+        toast.success(res.data.success)
+        setDestinations(res.data.recent)
+      } else {
+        toast.error('Couldnot fetch')
+      }
+    })
+  }, [])
   return (
     <div>
       {/* Hero Section */}
@@ -26,22 +39,22 @@ const HomePage = () => {
       {/* Destinations Section */}
       <section className="py-10">
         <div className="container mx-auto px-4">
-         <div className='flex flex-row justify-between'>
-         <h2 className="text-3xl font-bold text-center mb-8"></h2>
-         <h2 className="text-3xl font-bold text-center mb-8">Popular Destinations</h2>
-         <Link className="text-xl font-bold text-center mb-8">View All</Link>
-         </div>
+          <div className='flex flex-row justify-between'>
+            <h2 className="text-3xl font-bold text-center mb-8"></h2>
+            <h2 className="text-3xl font-bold text-center mb-8">Popular Destinations</h2>
+            <Link className="text-xl font-bold text-center mb-8">View All</Link>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {destinations.map((destination, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                <img src={destination.image} alt={destination.name} className="w-full h-48 object-cover" />
+            {destinations?.map((destination, index) => (
+              <Link to={`/desc/${destination?._id}`} key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src={destination?.destinationImageUrl} alt={destination?.destinationName} className="w-full h-48 object-cover" />
                 <div className="p-4">
-                  <h3 className="text-xl font-bold mb-2">{destination.name}</h3>
-                  <p className="text-gray-700 mb-2">{destination.location}</p>
-                  <p className="text-[#54A15D] font-semibold">Starting From Rs. {destination.price}</p>
+                  <h3 className="text-xl font-bold mb-2">{destination?.destinationName}</h3>
+                  <p className="text-gray-700 mb-2">{destination?.district}</p>
+                  <p className="text-[#54A15D] font-semibold">Starting From Rs. {destination?.price}</p>
                   <button className="mt-4 bg-[#54A15D] hover:bg-[#54A15D] text-white py-2 px-4 rounded-md">BOOK NOW</button>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -161,14 +174,14 @@ const HomePage = () => {
   );
 };
 
-const destinations = [
-  { name: 'Fewa Tal', location: 'Pokhara', price: '7000', image: '/assets/images/fewa.png' },
-  { name: 'Rara Lake', location: 'Mugu', price: '7000', image: '/assets/images/rara.png' },
-  { name: 'Mustang', location: 'Manang', price: '7000', image: '/assets/images/mus.png' },
-  { name: 'Shey Phoksundo', location: 'Dolpa', price: '7000', image: '/assets/images/shey.png' },
-  { name: 'Tilicho', location: 'Manang', price: '7000', image: '/assets/images/til.png' },
-  { name: 'Annapurna Base Camp', location: 'Kaski', price: '7000', image: '/assets/images/abc.png' }
-];
+// const destinations = [
+//   { name: 'Fewa Tal', location: 'Pokhara', price: '7000', image: '/assets/images/fewa.png' },
+//   { name: 'Rara Lake', location: 'Mugu', price: '7000', image: '/assets/images/rara.png' },
+//   { name: 'Mustang', location: 'Manang', price: '7000', image: '/assets/images/mus.png' },
+//   { name: 'Shey Phoksundo', location: 'Dolpa', price: '7000', image: '/assets/images/shey.png' },
+//   { name: 'Tilicho', location: 'Manang', price: '7000', image: '/assets/images/til.png' },
+//   { name: 'Annapurna Base Camp', location: 'Kaski', price: '7000', image: '/assets/images/abc.png' }
+// ];
 
 const activities = [
   {

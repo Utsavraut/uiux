@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import AdminSidebar from './AdminSidebar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createDestinationApi, getDestinationApi } from '../../apis/Api';
+import AdminSidebar from './AdminSidebar';
 
 const AdminCountry = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [destinationName, setDestinationName] = useState('');
+  const [description, setDescription] = useState('')
   const [district, setDistrict] = useState('');
+  const [map, setMap] = useState('')
   const [price, setPrice] = useState('');
   const [destinationImageUrl, setDestinationImageUrl] = useState(null);
   const [destinations, setDestinations] = useState([]);
@@ -46,7 +48,9 @@ const AdminCountry = () => {
     formData.append('destinationName', destinationName);
     formData.append('district', district);
     formData.append('price', price);
-    formData.append('destinationImage', destinationImageUrl);
+    formData.append('description', description)
+    formData.append('destinationImage', destinationImageUrl)
+    formData.append('map', map)
 
     try {
       const response = await createDestinationApi(formData);
@@ -64,6 +68,8 @@ const AdminCountry = () => {
         setDistrict('');
         setPrice('');
         setDestinationImageUrl(null);
+        setDescription('')
+        setMap('')
       } else {
         toast.error(response.data.message);
       }
@@ -166,6 +172,20 @@ const AdminCountry = () => {
                     onChange={(e) => setPrice(e.target.value)}
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Description</label>
+                  <textarea className='mt-1 block w-full border-2 border-gray-400 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm' onChange={(e) => setDescription(e.target.value)}>{description}</textarea>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Map</label>
+                  <input
+                    type="text"
+                    className="mt-1 block w-full border-2 border-gray-400 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                    onChange={(e) => setMap(e.target.value)}
+                  />
+                </div>
+
                 <div>
                   <label htmlFor="file" className="block text-sm font-medium text-gray-700">Image</label>
                   <input

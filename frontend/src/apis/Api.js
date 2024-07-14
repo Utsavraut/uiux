@@ -24,6 +24,10 @@ export const loginUserApi = (data)=> Api.post('api/users/login',data)
 export const createDestinationApi = (data)=> Api.post('api/admin/createDestination',data)
 export const getDestinationApi = (data) => Api.get('/api/admin/getDestination',data)
 
+export const getDestinationByIdApi = (id) => Api.get(`api/admin/destination/getById/${id}`)
+
+export const getYouMayLikeDataApi = (id) => Api.get(`api/admin/destination/youMayLike/${id}`)
+
 // export const updateUserApi = (id, data) => Api.put(`/api/user/update_user/${id}`, data);
 // export const getSingleUserApi = (id) => Api.get(`/api/user/get_user/${id}`)
 // export const forgetPasswordAPI = (data)=> Api.post('/api/user/forgetpassword', data)`

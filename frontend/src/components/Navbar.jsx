@@ -193,7 +193,7 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope, faBars, faTimes, faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faInstagram } from '@fortawesome/free-brands-svg-icons';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -255,11 +255,11 @@ const Navbar = () => {
             <img src="/assets/images/logo.png" alt="Logo" className="h-16 w-48 object-cover" />
           </div>
           <nav className="hidden md:flex space-x-8">
-            <a href="#" className="text-[#54A15D] font-semibold">HOME</a>
-            <a href="#" className="text-gray-800 hover:text-[#54A15D]">ABOUT US</a>
-            <a href="#" className="text-gray-800 hover:text-[#54A15D">DESTINATION</a>
-            <a href="#" className="text-gray-800 hover:text-[#54A15D">BLOG</a>
-            <a href="#" className="text-gray-800 hover:text-[#54A15D">CONTACT US</a>
+            <Link to="/home" className="text-[#54A15D] font-semibold">HOME</Link>
+            <Link to="/" className="text-gray-800 hover:text-[#54A15D]">ABOUT US</Link>
+            <Link to="/dest" className="text-gray-800 hover:text-[#54A15D">DESTINATION</Link>
+            <Link to="/" className="text-gray-800 hover:text-[#54A15D">BLOG</Link>
+            <Link to="/" className="text-gray-800 hover:text-[#54A15D">CONTACT US</Link>
           </nav>
           <div className="md:hidden">
             <button onClick={handleMobileMenuToggle} className="text-gray-800 focus:outline-none">
