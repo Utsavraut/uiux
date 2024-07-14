@@ -72,6 +72,8 @@ function AppContent() {
         <Route element={<AdminRoutes />}>
           <Route path='/adminsid' element={<AdminSidebar />} />
           <Route path='/dash' element={<Dashboard />} />
+          <Route path='/adminContact' element={<ContactPage />} />
+
           <Route path='/add' element={<AdminCountry />} />
           <Route path='/addblog' element={<AdminBlog />} />
           <Route path='/book' element={<AdminBooking />} />

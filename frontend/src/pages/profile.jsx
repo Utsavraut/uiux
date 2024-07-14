@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getUserBookingApi } from '../apis/Api'; // Make sure you import the correct API function
+import { getUserBookingApi, updatePasswordApi } from '../apis/Api'; // Make sure you import the correct API functions
+import { toast } from 'react-toastify';
 
 const ProfilePage = () => {
   const [passwordData, setPasswordData] = useState({
@@ -33,10 +34,33 @@ const ProfilePage = () => {
     setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmitPasswordChange = (e) => {
+  const handleSubmitPasswordChange = async (e) => {
     e.preventDefault();
-    console.log('Password Change Data:', passwordData);
-    alert('Password change request submitted!');
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      toast.error('New password and confirm password do not match.');
+      return;
+    }
+
+    try {
+      const response = await updatePasswordApi(userId, {
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+      });
+
+      if (response.data.success) {
+        toast.success('Password updated successfully!');
+        setPasswordData({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        });
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error('Error updating password: ' + error.message);
+    }
   };
 
   const formatDate = (date) => {

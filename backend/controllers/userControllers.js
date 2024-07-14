@@ -217,6 +217,57 @@ const forgetPassword = async (req, res) => {
     });
   }
 };
+// const updatePassword = async (req, res) => {
+//   const userId = req.params.id;
+//   console.log(req.body);
+
+//   const { currentPassword, newPassword } = req.body;
+//   if (!currentPassword || !newPassword) {
+//     return res.json({
+//       success: false,
+//       message: "Please enter all required fields."
+//     });
+//   }
+
+//   try {
+//     const user = await Users.findById(userId);
+
+//     if (!user) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "User not found"
+//       });
+//     }
+
+//     // Check if the current password matches
+//     const isMatch = await bcrypt.compare(currentPassword, user.password);
+//     if (!isMatch) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Current password is incorrect"
+//       });
+//     }
+
+//     // Update with the new password
+//     const salt = await bcrypt.genSalt(10);
+//     user.password = await bcrypt.hash(newPassword, salt);
+
+//     await user.save();
+
+//     res.json({
+//       success: true,
+//       message: "User password updated successfully",
+//     });
+
+//   } catch (error) {
+//     console.error('Error updating user password:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Server error",
+//       error: error.message
+//     });
+//   }
+// };
 
 module.exports = {
   createUser,

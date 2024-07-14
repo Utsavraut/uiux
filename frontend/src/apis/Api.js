@@ -36,6 +36,7 @@ export const updateDestinationApi = (id, data)=> Api.put(`api/admin/update_desti
 export const deleteDestinationApi = (id)=> Api.delete(`api/admin/delete_destination/${id}`,config)
 export const contactUsApi = (data)=> Api.post('api/users/contact_us',data)
 export const getContactApi = (data) => Api.get('/api/admin/getContact',data)
+export const updatePasswordApi = (id, data)=> Api.put(`api/users/update_user/${id}`,data)
 
 // export const updateUserApi = (id, data) => Api.put(`/api/user/update_user/${id}`, data);
 // export const getSingleUserApi = (id) => Api.get(`/api/user/get_user/${id}`)
