@@ -2,54 +2,56 @@ const Destinations = require('../model/destinationModel');
 const cloudinary = require('cloudinary');
 
 
-const createDestination = async (req,res) =>{
+const createDestination = async (req, res) => {
     // step 1 : Check incomming data
     console.log(req.body);
     console.log(req.files);
 
     // step:2 destructuring
-    const {destinationName,price,district} = req.body;
+    const { destinationName, price, district, description, map } = req.body;
 
-    const {destinationImage} = req.files;
+    const { destinationImage } = req.files;
 
     // step 3 : validate the data
-    if(!destinationImage || !destinationName || !price || !district){
+    if (!destinationImage || !destinationName || !price || !district || !description || !map) {
         return res.json({
-            success : false,
-            message : "Please fill all the fields."
+            success: false,
+            message: "Please fill all the fields."
         })
     }
 
-        // step 4 : try catch block
-        try {
-            // step 5 : upload image to cloudinary
-            const uploadedImage = await cloudinary.v2.uploader.upload(
-                destinationImage.path,
-                {
-                    folder : "destinations",    
-                    crop : "scale"
-                }
-            )
-    
-            // save the products
-            const newDestination = new Destinations({
-                destinationName : destinationName,
-                price : price,
-                district : district,
-              destinationImageUrl : uploadedImage.secure_url,
-            })
-            await newDestination.save();
-            res.status(200).json({
-                success : true,
-                message : "Destination created successfully",
-                data : newDestination
-            })
-    
-            
-        } catch (error) {
-            console.log(error);
-            res.status(500).json("Server Error")
-        }
+    // step 4 : try catch block
+    try {
+        // step 5 : upload image to cloudinary
+        const uploadedImage = await cloudinary.v2.uploader.upload(
+            destinationImage.path,
+            {
+                folder: "destinations",
+                crop: "scale"
+            }
+        )
+
+        // save the products
+        const newDestination = new Destinations({
+            destinationName: destinationName,
+            price: price,
+            district: district,
+            description: description,
+            destinationImageUrl: uploadedImage.secure_url,
+            map: map
+        })
+        await newDestination.save();
+        res.status(200).json({
+            success: true,
+            message: "Destination created successfully",
+            data: newDestination
+        })
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json("Server Error")
+    }
 
 }
 
@@ -70,7 +72,7 @@ const createDestination = async (req,res) =>{
 // //             message : "Futsal fetched successfully",
 // //             futsals : listOfFutsals
 // //         })
-        
+
 // //     } catch (error) {
 // //         console.log(error);
 // //         res.status(500).json("Server Error")
@@ -79,32 +81,72 @@ const createDestination = async (req,res) =>{
 
 
 // // // function for getting all products
-const getAllDestination = async (req,res) => {
+const getAllDestination = async (req, res) => {
     try {
-        const page = parseInt(req.query._page,10);
-        const limit = parseInt(req.query._limit,10);
-        if(page!== undefined && limit!== undefined){
-            const skip = (page-1)*limit;
+        const page = parseInt(req.query._page, 10);
+        const limit = parseInt(req.query._limit, 10);
+        if (page !== undefined && limit !== undefined) {
+            const skip = (page - 1) * limit;
             const listOfDestinations = await Destinations.find().skip(skip).limit(limit);
+            const recentDestination = await Destinations.find().limit(3)
+
             return res.status(200).json({
                 success: true,
-                futsals : listOfDestinations,
-                message : "Fetched destinations successfully",
-
+                futsals: listOfDestinations,
+                recent: recentDestination,
+                message: "Fetched destinations successfully",
             })
-             
         }
         const listOfDestinations = await Destinations.find();
+        const recentDestination = await Destinations.find().sort({ _id: -1 }).limit(3)
         return res.status(200).json({
-            success : true,
-            message : "Destinations fetched successfully",
-            futsals : listOfDestinations
+            success: true,
+            message: "Destinations fetched successfully",
+            futsals: listOfDestinations,
+            recent: recentDestination
         })
-        
+
     } catch (error) {
         console.log(error);
         res.status(500).json("Server Error")
-    }   
+    }
+}
+
+const getDestinationById = async (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+    try {
+        const destinationData = await Destinations.findById(id)
+        res.status(200).json({
+            success: true,
+            message: 'Single Destination fetched successfully',
+            destination: destinationData
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: 'Check log there is a problem',
+        })
+    }
+}
+
+const youMayLike = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const destinationData = await Destinations.find({ _id: { $ne: id } }).sort({ _id: -1 }).limit(3);
+        res.status(200).json({
+            success: true,
+            message: 'You may like data fetched!',
+            likeData: destinationData
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: 'Check log for error.'
+        })
+    }
 }
 
 // // //  get product by id
@@ -246,6 +288,6 @@ const getAllDestination = async (req,res) => {
 // //     }
 // }
 module.exports = {
-    createDestination,getAllDestination
-    
+    createDestination, getAllDestination, getDestinationById, youMayLike
+
 }

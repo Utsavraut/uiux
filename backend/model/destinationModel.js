@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const destinationSchema = new mongoose.Schema({
-  
+
   destinationName: {
     type: String,
     required: true,
@@ -20,7 +20,12 @@ const destinationSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  
+  description: {
+    type: String
+  },
+  map: {
+    type: String
+  }
 });
 
 const Destinations = mongoose.model("destination", destinationSchema);

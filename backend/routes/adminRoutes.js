@@ -8,6 +8,10 @@ router.post('/createDestination',adminController.createDestination)
 // // Get all products API
 router.get("/getDestination", adminController.getAllDestination)
 
+router.get('/destination/getById/:id', adminController.getDestinationById)
+
+router.get('/destination/youMayLike/:id', adminController.youMayLike)
+
 // // get single product api
 // router.get("/get_futsals/:id", futsalController.getSingleFutsal)
 
