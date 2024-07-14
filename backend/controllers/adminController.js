@@ -148,7 +148,106 @@ const youMayLike = async (req, res) => {
         })
     }
 }
+const updateDestination = async(req,res)=>{
+    // console.log(req.body);
+    // console.log(req.files);
 
+    const{
+        destinationName,
+        price,
+        description,
+        district,
+        map,
+        
+    } = req.body;
+
+    const {destinationImage} = req.files;
+
+    // destructure id from URL
+     const id = req.params.id
+
+    if(!destinationName || !price ||!district||!description || !map ){
+        res.json({
+            success: false,
+            message: "All fields are required"
+        })
+    }
+    try{
+        if(destinationImage){
+            const uploadedImage = await cloudinary.v2.uploader.upload(
+                destinationImage.path,
+                {
+                    folder: "destinations",
+                    crop: "scale"
+                }
+            )
+
+            // update the product
+            const updatedDestination = {
+                destinationName: destinationName,
+                price : price,
+                district:district,
+                description: description,
+                map: map,
+                destinationImageUrl: uploadedImage.secure_url,
+            }
+            await Destinations.findByIdAndUpdate(id, updatedDestination);
+            res.json({
+                success: true,
+                message: "Destination Updated Successfully",
+                destination: updatedDestination
+            })
+        }
+        else{
+            // update the futsal
+            const updatedDestination = {
+                destinationName: destinationName,
+                price : price,
+                district:district,
+                description: description,
+                map: map,
+            }
+            await Destinations.findByIdAndUpdate(id, updatedDestination);
+            res.json({
+                success: true,
+                message: "Destination Updated Successfully without Image",
+                destination: updatedDestination
+            })
+        }
+
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error"
+        })
+    }
+}
+const deleteDestination = async (req,res)=>{
+    try{
+        const deletedDestination = await Destinations.findByIdAndDelete(req.params.id);
+        if(!deletedDestination){
+            res.json({
+                success: false,
+                message: "Destination Not Found"
+            })
+        }
+        res.json({
+            success: true,
+            message:"Destination Deleted Successfully"
+        })
+
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error"
+        })
+
+    }
+}
 // // //  get product by id
 
 // // const getSingleFutsal = async(req,res)=>{
@@ -178,116 +277,10 @@ const youMayLike = async (req, res) => {
 // // }
 
 // // // update product
-// // const updateFutsal = async(req,res)=>{
-// //     // console.log(req.body);
-// //     // console.log(req.files);
 
-// //     const{
-// //         futsalName,
-// //         futsalPrice,
-// //         futsalCategory,
-// //         futsalDescription,
-// //         futsalLocation,
-// //         futsalContact,
-// //         latitude,
-// //         longitude,
-// //     } = req.body;
-
-// //     const {futsalImage} = req.files;
-
-// //     // destructure id from URL
-// //      const id = req.params.id
-
-// //     if(!futsalName || !futsalPrice ||!futsalCategory||!futsalDescription || !futsalLocation ||!futsalContact){
-// //         res.json({
-// //             success: false,
-// //             message: "All fields are required"
-// //         })
-// //     }
-// //     try{
-// //         if(futsalImage){
-// //             const uploadedImage = await cloudinary.v2.uploader.upload(
-// //                 futsalImage.path,
-// //                 {
-// //                     folder: "futsals",
-// //                     crop: "scale"
-// //                 }
-// //             )
-
-// //             // update the product
-// //             const updatedFutsal = {
-// //                 futsalName: futsalName,
-// //                 futsalPrice : futsalPrice,
-// //                 futsalContact:futsalContact,
-// //                 futsalDescription: futsalDescription,
-// //                 futsalCategory: futsalCategory,
-// //                 futsalLocation : futsalLocation,
-// //                 futsalImageUrl: uploadedImage.secure_url,
-// //                 latitude: latitude,
-// //                 longitude: longitude,
-// //             }
-// //             await Futsals.findByIdAndUpdate(id, updatedFutsal);
-// //             res.json({
-// //                 success: true,
-// //                 message: "Futsal Updated Successfully",
-// //                 futsal: updatedFutsal
-// //             })
-// //         }
-// //         else{
-// //             // update the futsal
-// //             const updatedFutsal = {
-// //               futsalName: futsalName,
-// //               futsalPrice : futsalPrice,
-// //               futsalContact:futsalContact,
-// //               futsalDescription: futsalDescription,
-// //               futsalCategory: futsalCategory,
-// //               futsalLocation : futsalLocation,
-// //               latitude: latitude,
-// //               longitude: longitude,
-// //             }
-// //             await Futsals.findByIdAndUpdate(id, updatedFutsal);
-// //             res.json({
-// //                 success: true,
-// //                 message: "Futsal Updated Successfully without Image",
-// //                 futsal: updatedFutsal
-// //             })
-// //         }
-
-// //     }
-// //     catch(error){
-// //         console.log(error);
-// //         res.status(500).json({
-// //             success: false,
-// //             message: "Server Error"
-// //         })
-// //     }
-// // }
 // // // delete product  
-// // const deleteFutsal = async (req,res)=>{
-// //     try{
-// //         const deletedfutsal = await Futsals.findByIdAndDelete(req.params.id);
-// //         if(!deletedfutsal){
-// //             res.json({
-// //                 success: false,
-// //                 message: "Futsal Not Found"
-// //             })
-// //         }
-// //         res.json({
-// //             success: true,
-// //             message:"Futsal Deleted Successfully"
-// //         })
 
-// //     }
-// //     catch(error){
-// //         console.log(error);
-// //         res.status(500).json({
-// //             success: false,
-// //             message: "Server Error"
-// //         })
-
-// //     }
-// }
 module.exports = {
-    createDestination, getAllDestination, getDestinationById, youMayLike
+    createDestination, getAllDestination, getDestinationById, youMayLike,updateDestination,deleteDestination
 
 }

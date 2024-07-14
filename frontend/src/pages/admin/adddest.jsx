@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { createDestinationApi, getDestinationApi } from '../../apis/Api';
+import { createDestinationApi, getDestinationApi, getDestinationByIdApi,deleteDestinationApi } from '../../apis/Api';
 import AdminSidebar from './AdminSidebar';
 
 const AdminCountry = () => {
@@ -21,7 +21,7 @@ const AdminCountry = () => {
       try {
         const response = await getDestinationApi();
         if (response.data.success) {
-          setDestinations(response.data.futsals);
+          setDestinations(response.data.destinations);
         } else {
           toast.error(response.data.message);
         }
@@ -31,8 +31,48 @@ const AdminCountry = () => {
       }
     };
 
+
     fetchDestinations();
   }, []);
+  const handleDeleteDestination = async (destinationId) => {
+    try {
+      const response = await deleteDestinationApi(destinationId);
+      if (response.data.success) {
+        // Filter out the deleted destination from the destinations array
+        const updatedDestinations = destinations.filter(dest => dest.id !== destinationId);
+        setDestinations(updatedDestinations);
+        toast.success('Destination deleted successfully');
+      } else {
+        toast.error('Failed to delete destination');
+      }
+    } catch (error) {
+      toast.error('Error deleting destination: ' + error.message);
+    }
+  };
+
+
+
+  const handleEditClick = async (destinationId) => {
+    try {
+      const response = await getDestinationByIdApi(destinationId);
+      if (response.data.success) {
+        const { destinationName, district, price, description, map, destinationImageUrl } = response.data.destination;
+        setDestinationName(destinationName);
+        setDistrict(district);
+        setPrice(price);
+        setDescription(description);
+        setMap(map);
+        setDestinationImageUrl(destinationImageUrl); // Note: This will not work directly if image URL is a string, handle file display separately
+        toggleModal();
+      } else {
+        toast.error('Failed to fetch destination details for editing');
+      }
+    } catch (error) {
+      toast.error('Error fetching destination details: ' + error.message);
+    }
+  };
+  
+
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
   const handleFileChange = (event) => setDestinationImageUrl(event.target.files[0]);
@@ -117,9 +157,10 @@ const AdminCountry = () => {
                   <td className="py-4 px-6"><img src={dest.destinationImageUrl} alt="Destination" className="w-10 h-10 rounded-full" /></td>
                   <td className="py-4 px-6">NRS {dest.price}</td>
                   <td className="py-4 px-6">
-                    <FontAwesomeIcon icon={faEdit} className="text-blue-500 mr-2 cursor-pointer" />
-                    <FontAwesomeIcon icon={faTrash} className="text-red-500 cursor-pointer" />
+                    <FontAwesomeIcon icon={faEdit} onClick={() => handleEditClick(dest._id)} className="text-blue-500 mr-2 cursor-pointer" />
+                    <FontAwesomeIcon icon={faTrash} onClick={() => handleDeleteDestination(dest._id)} className="text-red-500 cursor-pointer" />
                   </td>
+
                 </tr>
               ))}
             </tbody>
