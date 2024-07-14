@@ -39,6 +39,7 @@ const AdminCountry = () => {
   const handleDeleteDestination = async (destinationId) => {
     try {
       const response = await deleteDestinationApi(destinationId);
+      
       if (response.data.success) {
         // Filter out the deleted destination from the destinations array
         const updatedDestinations = destinations.filter(dest => dest.id !== destinationId);

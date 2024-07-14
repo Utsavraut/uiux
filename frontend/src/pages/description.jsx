@@ -3,15 +3,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getDestinationByIdApi, getYouMayLikeDataApi } from '../apis/Api';
+import { getDestinationByIdApi, getYouMayLikeDataApi, contactUsApi } from '../apis/Api';
 import BookingForm from './booking';
 
 const DescriptionPage = () => {
   const { id } = useParams();
   const [destination, setDestinations] = useState({});
-  const [youMayLike, setYouMayLike] = useState([])
+  const [youMayLike, setYouMayLike] = useState([]);
   const [showForm, setShowForm] = useState(false);
-
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    contact: '',
+    subject: '',
+    message: ''
+  });
 
   useEffect(() => {
     getDestinationByIdApi(id).then((res) => {
@@ -29,7 +35,8 @@ const DescriptionPage = () => {
         toast.error('Something went wrong while fetching you may like data')
       }
     })
-  }, [id])
+  }, [id]);
+
   const [activeTab, setActiveTab] = useState('overview');
   const [faqs, setFaqs] = useState([
     {
@@ -52,8 +59,33 @@ const DescriptionPage = () => {
       return faq;
     }));
   };
+
   const toggleForm = () => setShowForm(!showForm);
 
+  const handleContactChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await contactUsApi(formData);
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setFormData({
+          name: '',
+          email: '',
+          contact: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error('Error submitting contact form: ' + error.message);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-4">
@@ -233,28 +265,68 @@ const DescriptionPage = () => {
         {/* Inquiry Form */}
         <div className="bg-gray-100 p-6 rounded-lg shadow-lg md:w-1/2 mb-6 md:mb-0 md:mr-6">
           <h3 className="text-xl font-bold mb-4">You can send your enquiry via the form below.</h3>
-          <form className='flex flex-col'>
+          <form className='flex flex-col' onSubmit={handleContactSubmit}>
             <div className="mb-4">
               <label htmlFor="name" className="block mb-2 font-semibold">Enter Your Name *</label>
-              <input type="text" id="name" className="w-full px-4 py-2 border rounded-md focus:outline-none" />
+              <input 
+                type="text" 
+                id="name" 
+                name="name"
+                value={formData.name}
+                onChange={handleContactChange}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none" 
+                required
+              />
             </div>
             <div className="mb-4">
               <label htmlFor="email" className="block mb-2 font-semibold">Enter Your Email *</label>
-              <input type="email" id="email" className="w-full px-4 py-2 border rounded-md focus:outline-none" />
+              <input 
+                type="email" 
+                id="email" 
+                name="email"
+                value={formData.email}
+                onChange={handleContactChange}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none" 
+                required
+              />
             </div>
             <div className="mb-4">
               <label htmlFor="contact" className="block mb-2 font-semibold">Enter Your Contact *</label>
-              <input type="text" id="contact" className="w-full px-4 py-2 border rounded-md focus:outline-none" />
+              <input 
+                type="text" 
+                id="contact" 
+                name="contact"
+                value={formData.contact}
+                onChange={handleContactChange}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none" 
+                required
+              />
             </div>
             <div className="mb-4">
               <label htmlFor="subject" className="block mb-2 font-semibold">Enquiry Subject</label>
-              <input type="text" id="subject" className="w-full px-4 py-2 border rounded-md focus:outline-none" />
+              <input 
+                type="text" 
+                id="subject" 
+                name="subject"
+                value={formData.subject}
+                onChange={handleContactChange}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none" 
+                required
+              />
             </div>
             <div className="mb-4">
               <label htmlFor="message" className="block mb-2 font-semibold">Enter Your Message *</label>
-              <textarea id="message" className="w-full px-4 py-2 border rounded-md focus:outline-none" rows="4"></textarea>
+              <textarea 
+                id="message" 
+                name="message"
+                value={formData.message}
+                onChange={handleContactChange}
+                className="w-full px-4 py-2 border rounded-md focus:outline-none" 
+                rows="4"
+                required
+              ></textarea>
             </div>
-            <button type="submit" className="bg-[#54A15D]  hover:bg-[#54A15D] text-white py-2 px-4 rounded-md">SEND EMAIL</button>
+            <button type="submit" className="bg-[#54A15D] hover:bg-[#54A15D] text-white py-2 px-4 rounded-md">SEND EMAIL</button>
           </form>
         </div>
 
@@ -278,8 +350,6 @@ const DescriptionPage = () => {
         </Link>
       </div>
       {showForm && <BookingForm onClose={toggleForm} />}
-
-
 
       {/* You Might Also Like */}
       <div className="mt-8">

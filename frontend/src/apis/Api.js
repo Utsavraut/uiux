@@ -28,10 +28,15 @@ export const getDestinationByIdApi = (id) => Api.get(`api/admin/destination/getB
 
 export const getYouMayLikeDataApi = (id) => Api.get(`api/admin/destination/youMayLike/${id}`)
 export const createBookingApi = (data)=> Api.post('api/users/create_booking',data)
-export const getBookingApi = (data)=> Api.get('api/users/get_booking')
+export const getBookingApi = (data)=> Api.get('api/users/get_booking',data)
+export const getUserBookingApi = (id)=> Api.get(`api/users/get_userBooking/${id}`)
+
 export const updateDestinationApi = (id, data)=> Api.put(`api/admin/update_destination/${id}`,data,config)
 
-export const deleteDestinationApi = (id)=> Api.delete(`api/admin/delete_destination/${id}`)
+export const deleteDestinationApi = (id)=> Api.delete(`api/admin/delete_destination/${id}`,config)
+export const contactUsApi = (data)=> Api.post('api/users/contact_us',data)
+export const getContactApi = (data) => Api.get('/api/admin/getContact',data)
+
 // export const updateUserApi = (id, data) => Api.put(`/api/user/update_user/${id}`, data);
 // export const getSingleUserApi = (id) => Api.get(`/api/user/get_user/${id}`)
 // export const forgetPasswordAPI = (data)=> Api.post('/api/user/forgetpassword', data)`

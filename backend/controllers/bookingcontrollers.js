@@ -54,7 +54,7 @@ const createBooking = async (req, res) => {
   }
 };
 
-const getSingleBooking = async (req, res) => {
+const getBookingsByUser = async (req, res) => {
   const userId = req.params.id;
   if (!userId) {
     return res.json({
@@ -64,14 +64,14 @@ const getSingleBooking = async (req, res) => {
   }
 
   try {
-    const singleBooking = await Bookings.findById(userId)
-      .populate("user")
-      .populate("destination");
-    res.json({
-      success: true,
-      message: "Booking fetched Successfully",
-      booking: singleBooking,
-    });
+    const userBooking = await Bookings.find({
+      userId : userId
+  }).populate('destinationId','destinationName datefrom dateto')
+  res.json({
+      success : true,
+      message : "Bookings Fetched successfully",
+      bookings : userBooking
+  })
   } catch (error) {
     console.log(error);
     res.status(500).json("Server Error");
@@ -333,7 +333,7 @@ module.exports = {
   getAllBooking,
   // getBookingByUserid,
   // updateBooking,
-  getSingleBooking,
+  getBookingsByUser,
   // deleteBooking,
   // rejectBooking,
   // approveBooking,

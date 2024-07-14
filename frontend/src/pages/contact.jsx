@@ -1,6 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import { contactUsApi } from '../apis/Api'; // Ensure this API function is correctly implemented
 
 const ContactPage = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.name || !formData.email || !formData.message) {
+      toast.error('Please fill in all fields.');
+      return;
+    }
+
+    try {
+      const response = await contactUsApi(formData);
+      if (response.data.success) {
+        toast.success('Contact submitted successfully!');
+        setFormData({ name: '', email: '', message: '' }); // Reset form fields
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error('Submission failed: ' + error.message);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4">
       {/* Header with background image */}
@@ -12,20 +45,46 @@ const ContactPage = () => {
         {/* Contact Form */}
         <div className="bg-white p-6 rounded-lg shadow-lg w-full md:w-1/2">
           <h2 className="text-2xl font-semibold mb-6">Get in touch with us</h2>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-              <input type="text" id="name" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Your name" />
+              <input 
+                type="text" 
+                id="name" 
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
+                placeholder="Your name" 
+              />
             </div>
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-              <input type="email" id="email" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Your email" />
+              <input 
+                type="email" 
+                id="email" 
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
+                placeholder="Your email" 
+              />
             </div>
             <div className="mb-4">
               <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
-              <textarea id="message" rows="4" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Your message"></textarea>
+              <textarea 
+                id="message" 
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                rows="4" 
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" 
+                placeholder="Your message"
+              ></textarea>
             </div>
-            <button type="submit" className="w-full bg-[#54A15D] text-white py-2 px-4 rounded hover:bg-[#54A15D]">Send Message</button>
+            <button type="submit" className="w-full bg-[#54A15D] text-white py-2 px-4 rounded hover:bg-[#54A15D]">
+              Send Message
+            </button>
           </form>
         </div>
 

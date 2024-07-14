@@ -18,6 +18,7 @@ const BookingForm = ({ onClose }) => {
   });
 
   const [title, setTitle] = useState('Loading...');
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     getDestinationByIdApi(destinationId)
@@ -30,6 +31,9 @@ const BookingForm = ({ onClose }) => {
       })
       .catch(error => {
         toast.error('Error fetching destination details: ' + error.message);
+      })
+      .finally(() => {
+        setLoading(false); // Set loading to false after fetching data
       });
   }, [destinationId]);
 
@@ -39,7 +43,13 @@ const BookingForm = ({ onClose }) => {
 
   const handleBooking = async (e) => {
     e.preventDefault();
-    console.log(formData)
+
+    // Simple form validation
+    if (!formData.datefrom || !formData.dateto || !formData.address || !formData.contact) {
+      toast.error('Please fill in all fields.');
+      return;
+    }
+
     try {
       const response = await createBookingApi(formData);
       if (response.data.success) {
@@ -59,42 +69,48 @@ const BookingForm = ({ onClose }) => {
         <div className="text-right">
           <button onClick={onClose} className="text-lg">&times;</button>
         </div>
-        <h2 className="text-lg font-bold">{title}</h2>
-        <form onSubmit={handleBooking} className="space-y-4">
-          <input
-            type="date"
-            name="datefrom"
-            value={formData.datefrom}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-          <input
-            type="date"
-            name="dateto"
-            value={formData.dateto}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-          <input
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            placeholder="Address"
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-          <input
-            type="text"
-            name="contact"
-            value={formData.contact}
-            onChange={handleChange}
-            placeholder="Contact No:"
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-          <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md">
-            Submit Booking
-          </button>
-        </form>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <>
+            <h2 className="text-lg font-bold">{title}</h2>
+            <form onSubmit={handleBooking} className="space-y-4">
+              <input
+                type="date"
+                name="datefrom"
+                value={formData.datefrom}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+              <input
+                type="date"
+                name="dateto"
+                value={formData.dateto}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+              <input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                placeholder="Address"
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+              <input
+                type="text"
+                name="contact"
+                value={formData.contact}
+                onChange={handleChange}
+                placeholder="Contact No:"
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+              <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md">
+                Submit Booking
+              </button>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
