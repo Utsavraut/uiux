@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const adminController = require('../controllers/adminController');
 const { authGuardAdmin } = require('../middleware/authGuard');
+const bookingController = require('../controllers/bookingcontrollers');
 
 // Create product API
-router.post('/createDestination',adminController.createDestination)
+router.post('/createDestination', adminController.createDestination)
 
 // // Get all products API
 router.get("/getDestination", adminController.getAllDestination)
@@ -19,10 +20,10 @@ router.get('/destination/youMayLike/:id', adminController.youMayLike)
 // router.get("/getfutsalbyUser/:id", futsalController.getAllFutsalsbyUserId)
 
 // // update product api
-router.put("/update_destination/:id",authGuardAdmin,adminController.updateDestination)
+router.put('/update_destination/:id', adminController.updateDestination)
 
 // // delete product api
-router.delete("/delete_destination/:id",authGuardAdmin, adminController.deleteDestination)
+router.delete("/delete_destination/:id", authGuardAdmin, adminController.deleteDestination)
 
 
 module.exports = router;

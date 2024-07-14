@@ -161,21 +161,21 @@ const updateDestination = async(req,res)=>{
         
     } = req.body;
 
-    const {destinationImage} = req.files;
+    const {destinationImageUrl} = req.files;
 
     // destructure id from URL
      const id = req.params.id
 
     if(!destinationName || !price ||!district||!description || !map ){
-        res.json({
+        return res.json({
             success: false,
             message: "All fields are required"
         })
     }
     try{
-        if(destinationImage){
+        if(destinationImageUrl){
             const uploadedImage = await cloudinary.v2.uploader.upload(
-                destinationImage.path,
+                destinationImageUrl.path,
                 {
                     folder: "destinations",
                     crop: "scale"

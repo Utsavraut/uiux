@@ -54,54 +54,54 @@ const createBooking = async (req, res) => {
   }
 };
 
-// const getSingleBooking = async (req, res) => {
-//   const bookingId = req.params.id;
-//   if (!bookingId) {
-//     return res.json({
-//       success: false,
-//       message: "Booking ID is required",
-//     });
-//   }
+const getSingleBooking = async (req, res) => {
+  const userId = req.params.id;
+  if (!userId) {
+    return res.json({
+      success: false,
+      message: "Booking ID is required",
+    });
+  }
 
-//   try {
-//     const singleBooking = await Bookings.findById(bookingId)
-//       .populate("user")
-//       .populate("futsal");
-//     res.json({
-//       success: true,
-//       message: "Booking fetched Successfully",
-//       booking: singleBooking,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json("Server Error");
-//   }
-// };
+  try {
+    const singleBooking = await Bookings.findById(userId)
+      .populate("user")
+      .populate("destination");
+    res.json({
+      success: true,
+      message: "Booking fetched Successfully",
+      booking: singleBooking,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("Server Error");
+  }
+};
 
-// const getAllBooking = async (req, res) => {
-//   var today = new Date();
-//   var date =
-//     today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-//   var time =
-//     today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-//   var dateTime = date + " " + time;
-//   console.log(dateTime);
-//   try {
-//     const listOfBookings = await Bookings.find({})
-//       .populate("user", "userName")
-//       .populate("futsal", "futsalName");
-//     res.json({
-//       success: true,
-//       bookings: listOfBookings,
-//     });
-//   } catch (error) {
-//     console.error("Error fetching bookings:", error);
-//     res.status(500).json({
-//       success: false,
-//       error: "Internal Server Error",
-//     });
-//   }
-// };
+const getAllBooking = async (req, res) => {
+  var today = new Date();
+  var date =
+    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  var time =
+    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date + " " + time;
+  console.log(dateTime);
+  try {
+    const listOfBookings = await Bookings.find({})
+      .populate("user", "userName")
+      .populate("destination", "destinationName datefrom dateto price");
+    res.json({
+      success: true,
+      bookings: listOfBookings,
+    });
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+};
 
 // const getBookingByUserid = async (req, res) => {
 //   const userId = req.params.userId;
@@ -330,10 +330,10 @@ const createBooking = async (req, res) => {
 
 module.exports = {
   createBooking,
-  // getAllBooking,
+  getAllBooking,
   // getBookingByUserid,
   // updateBooking,
-  // getSingleBooking,
+  getSingleBooking,
   // deleteBooking,
   // rejectBooking,
   // approveBooking,
