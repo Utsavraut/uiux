@@ -29,7 +29,7 @@ const DestinationCard = ({ destination }) => {
           <button
             className="bg-[#54A15D] hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center transition-colors duration-300"
             aria-label={`Book now for ${destination.destinationName}`}>
-            <span>Book Now</span>
+            <span>See More</span>
             {/* <svg className="fill-current w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <path d="M0 0l10 10 10-10H0z"/>
               </svg> */}

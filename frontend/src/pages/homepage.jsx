@@ -52,7 +52,7 @@ const HomePage = () => {
                   <h3 className="text-xl font-bold mb-2">{destination?.destinationName}</h3>
                   <p className="text-gray-700 mb-2">{destination?.district}</p>
                   <p className="text-[#54A15D] font-semibold">Starting From Rs. {destination?.price}</p>
-                  <button className="mt-4 bg-[#54A15D] hover:bg-[#54A15D] text-white py-2 px-4 rounded-md">BOOK NOW</button>
+                  <button className="mt-4 bg-[#54A15D] hover:bg-[#54A15D] text-white py-2 px-4 rounded-md">See More</button>
                 </div>
               </Link>
             ))}
