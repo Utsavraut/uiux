@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarDay, faUser, faComment, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDay, faUser,  faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 const blogs = [
     { title: "Summer Holiday To The Oxolotan River", date: "July 15, 2022", author: "Admin", comments: 0, image: "/path/to/image1.jpg" },
@@ -15,16 +15,13 @@ const BlogCard = ({ blog }) => (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <img src={blog.image} alt={blog.title} className="w-full h-48 object-cover" />
         <div className="p-4">
-            <div className="flex items-center mb-2">
-                <FontAwesomeIcon icon={faCalendarDay} className="text-[#54A15D] mr-2" />
-                <span className="text-sm text-gray-600">{blog.date}</span>
-            </div>
+            
             <h3 className="font-bold text-lg mb-2">{blog.title}</h3>
             <div className="flex items-center text-sm text-gray-600">
                 <FontAwesomeIcon icon={faUser} className="text-[#54A15D] mr-2" />
                 <span>{`By ${blog.author}`}</span>
-                <FontAwesomeIcon icon={faComment} className="text-[#54A15D] ml-4 mr-2" />
-                <span>{`(${blog.comments}) Comments`}</span>
+                <FontAwesomeIcon icon={faCalendarDay} className="text-[#54A15D] mr-2" />
+                <span className="text-sm text-gray-600">{blog.date}</span>
             </div>
         </div>
     </div>
