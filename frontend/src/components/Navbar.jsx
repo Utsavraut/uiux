@@ -256,10 +256,10 @@ const Navbar = () => {
           </div>
           <nav className="hidden md:flex space-x-8">
             <Link to="/home" className="text-[#54A15D] font-semibold">HOME</Link>
-            <Link to="/" className="text-gray-800 hover:text-[#54A15D]">ABOUT US</Link>
+            <Link to="/about" className="text-gray-800 hover:text-[#54A15D]">ABOUT US</Link>
             <Link to="/dest" className="text-gray-800 hover:text-[#54A15D">DESTINATION</Link>
-            <Link to="/" className="text-gray-800 hover:text-[#54A15D">BLOG</Link>
-            <Link to="/" className="text-gray-800 hover:text-[#54A15D">CONTACT US</Link>
+            <Link to="/blog" className="text-gray-800 hover:text-[#54A15D">BLOG</Link>
+            <Link to="/contact " className="text-gray-800 hover:text-[#54A15D">CONTACT US</Link>
           </nav>
           <div className="md:hidden">
             <button onClick={handleMobileMenuToggle} className="text-gray-800 focus:outline-none">

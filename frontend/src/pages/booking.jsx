@@ -1,70 +1,80 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { createBookingApi, getDestinationByIdApi } from '../apis/Api';
+import { toast } from 'react-toastify';
 
-const BookingForm = () => {
+const BookingForm = ({ onClose }) => {
+  const { id: destinationId } = useParams();
+  const userData = localStorage.getItem("user");
+  const userId = userData ? JSON.parse(userData)._id : null;
+
   const [formData, setFormData] = useState({
-    name: '',
-    depDate: '',
-    returnDate: '',
+    userId: userId,
+    destinationId: destinationId,
+    datefrom: '',
+    dateto: '',
     address: '',
-    contactNo: ''
+    contact: ''
   });
 
-  const [title, setTitle] = useState('Loading...'); // Default title
+  const [title, setTitle] = useState('Loading...');
 
   useEffect(() => {
-    // Simulate fetching the title from a backend API
-    const fetchTitle = async () => {
-      // Simulated API call
-      const response = await new Promise(resolve => setTimeout(() => resolve({ title: "ANNAPURNA BASE CAMP" }), 1000));
-      setTitle(response.title);
-    };
-
-    fetchTitle();
-  }, []);
+    getDestinationByIdApi(destinationId)
+      .then(response => {
+        if (response.data.success) {
+          setTitle(response.data.destination.destinationName);
+        } else {
+          toast.error('Destination details could not be fetched.');
+        }
+      })
+      .catch(error => {
+        toast.error('Error fetching destination details: ' + error.message);
+      });
+  }, [destinationId]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleBooking = async (e) => {
     e.preventDefault();
-    console.log('Form Data Submitted: ', formData);
-    alert('Booking Details Submitted!');
+    console.log(formData)
+    try {
+      const response = await createBookingApi(formData);
+      if (response.data.success) {
+        toast.success('Booking successful!');
+        onClose(); // Optionally close the modal or navigate away
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error('Booking failed: ' + error.message);
+    }
   };
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-5 rounded-lg">
+      <div className="bg-white p-5 rounded-lg relative">
         <div className="text-right">
-          <button onClick={() => console.log('Modal closed')}>&times;</button>
+          <button onClick={onClose} className="text-lg">&times;</button>
         </div>
-        <h2 className="text-lg font-bold mb-4">{title}</h2>
-        <p className="mb-4">FILL THE DETAILS BELOW TO BOOK</p>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <h2 className="text-lg font-bold">{title}</h2>
+        <form onSubmit={handleBooking} className="space-y-4">
           <input
-            type="text"
-            name="name"
-            value={formData.name}
+            type="date"
+            name="datefrom"
+            value={formData.datefrom}
             onChange={handleChange}
-            placeholder="Name"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          <div className="flex justify-between gap-4">
-            <input
-              type="date"
-              name="depDate"
-              value={formData.depDate}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
-            />
-            <input
-              type="date"
-              name="returnDate"
-              value={formData.returnDate}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
-            />
-          </div>
+          <input
+            type="date"
+            name="dateto"
+            value={formData.dateto}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-md"
+          />
           <input
             type="text"
             name="address"
@@ -75,14 +85,14 @@ const BookingForm = () => {
           />
           <input
             type="text"
-            name="contactNo"
-            value={formData.contactNo}
+            name="contact"
+            value={formData.contact}
             onChange={handleChange}
             placeholder="Contact No:"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
           <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md">
-            ADVANCE
+            Submit Booking
           </button>
         </form>
       </div>

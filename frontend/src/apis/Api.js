@@ -27,6 +27,7 @@ export const getDestinationApi = (data) => Api.get('/api/admin/getDestination',d
 export const getDestinationByIdApi = (id) => Api.get(`api/admin/destination/getById/${id}`)
 
 export const getYouMayLikeDataApi = (id) => Api.get(`api/admin/destination/youMayLike/${id}`)
+export const createBookingApi = (data)=> Api.post('api/users/create_booking',data)
 
 // export const updateUserApi = (id, data) => Api.put(`/api/user/update_user/${id}`, data);
 // export const getSingleUserApi = (id) => Api.get(`/api/user/get_user/${id}`)

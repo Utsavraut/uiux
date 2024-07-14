@@ -1,14 +1,17 @@
 import { faCheckCircle, faChevronDown, faChevronUp, faCircle, faMapMarkerAlt, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getDestinationByIdApi, getYouMayLikeDataApi } from '../apis/Api';
+import BookingForm from './booking';
 
 const DescriptionPage = () => {
   const { id } = useParams();
   const [destination, setDestinations] = useState({});
   const [youMayLike, setYouMayLike] = useState([])
+  const [showForm, setShowForm] = useState(false);
+
 
   useEffect(() => {
     getDestinationByIdApi(id).then((res) => {
@@ -49,6 +52,8 @@ const DescriptionPage = () => {
       return faq;
     }));
   };
+  const toggleForm = () => setShowForm(!showForm);
+
 
   return (
     <div className="container mx-auto px-4 py-4">
@@ -268,10 +273,12 @@ const DescriptionPage = () => {
 
       {/* Book Now Button */}
       <div className="flex justify-center my-8">
-        <button className="bg-[#54A15D] hover:bg-green-700 text-white font-bold py-2 px-8 rounded-full">
+        <Link to={`/booking/${destination._id}`} className="bg-[#54A15D] hover:bg-green-700 text-white font-bold py-2 px-8 rounded-full">
           Book Now
-        </button>
+        </Link>
       </div>
+      {showForm && <BookingForm onClose={toggleForm} />}
+
 
 
       {/* You Might Also Like */}

@@ -4,7 +4,7 @@ const ContactPage = () => {
   return (
     <div className="container mx-auto px-4">
       {/* Header with background image */}
-      <div className="w-full text-white py-10 px-4 text-center bg-cover bg-center" style={{ backgroundImage: "url('assets/images/con.png')", height: '300px', marginBottom: '20px' }}>
+      <div className="w-full text-white py-10 px-4 text-center bg-cover bg-center" style={{ backgroundImage: "url('assets/images/condo.png')", height: '300px', marginBottom: '20px' }}>
       </div>
       
       {/* Section for Contact Form and Map */}
