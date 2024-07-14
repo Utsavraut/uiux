@@ -1,6 +1,7 @@
 // import
 const router = require('express').Router();
 const userController = require("../controllers/userControllers")
+const bookingController = require("../controllers/bookingcontrollers")
 
 // create user api
 router.post('/create', userController.createUser)
@@ -10,6 +11,7 @@ router.post('/login', userController.loginUser)
 
 router.get("/get_user/:id", userController.getSingleUser)
 
+router.post("/create_booking", bookingController.createBooking),
 
 
 // update the user

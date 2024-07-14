@@ -92,7 +92,7 @@ const getAllDestination = async (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                futsals: listOfDestinations,
+                destinations: listOfDestinations,
                 recent: recentDestination,
                 message: "Fetched destinations successfully",
             })
@@ -102,7 +102,7 @@ const getAllDestination = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Destinations fetched successfully",
-            futsals: listOfDestinations,
+            destinations: listOfDestinations,
             recent: recentDestination
         })
 
