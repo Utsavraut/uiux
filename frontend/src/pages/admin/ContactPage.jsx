@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getContactApi } from '../apis/Api';
+import { getContactApi } from '../../apis/Api';
 
-const ContactsPage = () => {
+const AdminContactPage = () => {
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
@@ -73,4 +73,4 @@ const ContactsPage = () => {
   );
 };
 
-export default ContactsPage;
+export default AdminContactPage;

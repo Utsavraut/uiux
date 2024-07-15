@@ -25,6 +25,9 @@ import UserRoutes from "./protected/UserRotes";
 import AdminRoutes from "./protected/AdminRoutes";
 import EditDestination from './pages/admin/EditDestination';
 import About from './pages/Aboutus';
+import Contacts from './pages/contact';
+import UserContactPage from './pages/contact';
+import AdminContactPage from './pages/admin/ContactPage';
 
 function App() {
   return (
@@ -57,7 +60,7 @@ function AppContent() {
         <Route path='/desc/:id' element={<DescriptionPage />} />
         <Route path='/blog' element={<Blogs />} />
         <Route path='/dest' element={<Dest />} />
-        <Route path='/contact' element={<ContactPage />} />
+        <Route path='/contact' element={<UserContactPage />} />
         <Route path='/booking/:id' element={<BookingForm />} />
         <Route path='/for' element={<ForgotPassword />} />
         <Route path='/prof' element={<ProfilePage />} />
@@ -72,7 +75,7 @@ function AppContent() {
         <Route element={<AdminRoutes />}>
           <Route path='/adminsid' element={<AdminSidebar />} />
           <Route path='/dash' element={<Dashboard />} />
-          <Route path='/adminContact' element={<ContactPage />} />
+          <Route path='/adminContact' element={<AdminContactPage />} />
 
           <Route path='/add' element={<AdminCountry />} />
           <Route path='/addblog' element={<AdminBlog />} />

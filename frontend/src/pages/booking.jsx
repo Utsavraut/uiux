@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { createBookingApi, getDestinationByIdApi } from '../apis/Api';
 import { toast } from 'react-toastify';
 
-const BookingForm = ({ onClose }) => {
+const BookingForm = () => {
   const { id: destinationId } = useParams();
   const userData = localStorage.getItem("user");
   const userId = userData ? JSON.parse(userData)._id : null;
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
     userId: userId,
@@ -54,7 +55,7 @@ const BookingForm = ({ onClose }) => {
       const response = await createBookingApi(formData);
       if (response.data.success) {
         toast.success('Booking successful!');
-        onClose(); // Optionally close the modal or navigate away
+        navigate(`/desc/${destinationId}`)
       } else {
         toast.error(response.data.message);
       }
@@ -67,7 +68,7 @@ const BookingForm = ({ onClose }) => {
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
       <div className="bg-white p-5 rounded-lg relative">
         <div className="text-right">
-          <button onClick={onClose} className="text-lg">&times;</button>
+          <button className="text-lg">&times;</button>
         </div>
         {loading ? (
           <div>Loading...</div>

@@ -28,7 +28,7 @@ import {
       { path: "/admin-dashboard", label: "Dashboard", icon: faTachometerAlt },
       { path: "/add", label: "Destinations", icon: faGlobe },
       { path: "/book", label: "Bookings", icon: faComments },
-      { path: "/admin-enqueries", label: "Contact", icon: faList },
+      { path: "/adminContact", label: "Contact", icon: faList },
       { path: "/admin-blogs", label: "Blogs", icon: faBlog },
       { path: "/logout", label: "Log Out", icon: faSignOutAlt },
     ];
